@@ -8,7 +8,7 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "دروس العقيدة الإسلامية",
+    pageTitle: "",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
