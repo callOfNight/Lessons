@@ -19,9 +19,9 @@ export function getDate(cfg: GlobalConfiguration, data: QuartzPluginData): Date 
 }
 
 export function formatDate(d: Date, locale: ValidLocale = "en-US"): string {
-  return d.toLocaleDateString(locale, {
+  return d.toLocaleDateString("en-GB", {
     year: "numeric",
-    month: "short",
+    month: "2-digit",
     day: "2-digit",
   })
 }

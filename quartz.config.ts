@@ -15,7 +15,7 @@ const config: QuartzConfig = {
     analytics: {
       provider: "plausible",
     },
-    locale: "en-US",
+    locale: "ar-SA",
     baseUrl: "callOfNight.github.io/Lessons",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",

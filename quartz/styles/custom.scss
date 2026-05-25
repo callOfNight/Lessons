@@ -1,3 +1,68 @@
-@use "./base.scss";
+// @use "./base.scss";
 
 // put your custom CSS here!
+// @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap'); // Fallback if Scherable New is local
+
+// :root {
+//   --bodyFont: "Scheherazade New", sans-serif;
+//   --headerFont: "Scheherazade New", sans-serif;
+//   --codeFont: monospace;
+// }
+
+// html {
+//   direction: rtl;
+//   text-align: right;
+// }
+
+// /* Center search at the top */
+// header {
+//   display: flex;
+//   justify-content: center;
+//   width: 100%;
+//   padding: 1rem 0;
+// }
+
+// .search {
+//   max-width: 600px;
+//   width: 100%;
+// }
+
+
+/* Inside quartz/styles/custom.scss */
+@use "./base.scss";
+
+html {
+  direction: rtl;
+  text-align: right;
+}
+
+body, h1, h2, h3, h4, h5, h6, .title, .article-title, .search {
+  font-family: "Scheherazade New", serif !important;
+  letter-spacing: normal !important;
+  font-variant-ligatures: common-ligatures !important;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1 !important;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem 0;
+}
+.search { max-width: 600px; width: 100%; }
+/* Add to bottom of quartz/styles/custom.scss */
+.content-meta {
+  direction: ltr !important; 
+  display: inline-block;
+  text-align: right;
+  margin-top: 0.5rem;
+}
+
+
+// .content-meta span:nth-child(2), .reading-time { display: none !important; }
+
+/* Hide reading time */
+// .content-meta span:nth-child(2), 
+// .reading-time {
+//   display: none !important;
+// }
