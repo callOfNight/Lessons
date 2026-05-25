@@ -2,102 +2,59 @@
 title: "الصفحة الرئيسية"
 ---
 
-<!-- 1. Media query layer isolated safely at the top -->
+
 <style>
-  .cards-container {
-    display: flex;
-    flex-direction: column;
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 16px;
     width: 100%;
-    margin-top: 24px;
+    margin-top: 28px;
     direction: rtl;
   }
-  .custom-card {
-    display: block;
-    padding: 20px;
-    border: 1px solid var(--lightgray);
-    border-radius: 8px;
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
+  
+  .lesson-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px;
     background: var(--light);
+    border: 1px solid var(--lightgray);
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: var(--dark);
-    width: 100%;
-    box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease-in-out;
   }
-  @media (min-width: 600px) {
-    .cards-container {
-      flex-direction: row-reverse;
-      flex-wrap: wrap;
+
+  .lesson-btn::after {
+    content: "←";
+    font-size: 1.4rem;
+    color: var(--secondary);
+    transition: transform 0.2s ease;
+  }
+
+  /* Desktop and Tablet optimization */
+  @media (min-width: 768px) {
+    .lessons-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
     }
-    .custom-card {
-      width: calc(50% - 8px);
+    .lesson-btn:hover {
+      transform: translateY(-3px);
+      border-color: var(--secondary);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+    .lesson-btn:hover::after {
+      transform: translateX(-5px);
     }
   }
 </style>
 
-<!-- 2. Clean semantic HTML free of inline conflicting layout rules -->
-<div class="cards-container">
-  <a href="/regular-lessons" class="custom-card">الدروس المنتظمة</a>
-  <a href="/special-lessons" class="custom-card">الدروس الخاصة</a>
-  <a href="/summaries" class="custom-card">ملخصات عامة</a>
-</div>
-
-
-
----
-
-## 02
-
-
-<div style="display: flex; flex-direction: column; gap: 16px; margin-top: 24px; direction: rtl;">
-  <!-- Desktop Media Query Override Class using native styling fallback -->
-  <style>
-    @media (min-width: 600px) {
-      .cards-container { flex-direction: row-reverse !important; flex-wrap: wrap; }
-      .custom-card { width: calc(50% - 12px) !important; }
-    }
-  </style>
-  
-  <div class="cards-container" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
-    
-<a href="/regular-lessons" class="custom-card" style="display: block; padding: 20px; border: 1px solid var(--lightgray); border-radius: 8px; text-align: center; text-decoration: none; font-weight: bold; background: var(--light); color: var(--dark);">
-    الدروس المنتظمة
-</a>
-
-<a href="/special-lessons" class="custom-card" style="display: block; padding: 20px; border: 1px solid var(--lightgray); border-radius: 8px; text-align: center; text-decoration: none; font-weight: bold; background: var(--light); color: var(--dark);">
-    الدروس الخاصة
-</a>
-
-<a href="/summaries" class="custom-card" style="display: block; padding: 20px; border: 1px solid var(--lightgray); border-radius: 8px; text-align: center; text-decoration: none; font-weight: bold; background: var(--light); color: var(--dark);">
-    ملخصات عامة
-</a>
-
-
-  </div>
-</div>
-
-
-
----
-## Hey
-
-
-
-
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
-
-<a href="/regular-lessons" style="border: 1px solid var(--lightgray); padding: 20px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: bold;">
-الدروس المنتظمة
-</a>
-
-<a href="/special-lessons" style="border: 1px solid var(--lightgray); padding: 20px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: bold;">
-الدروس الخاصة
-</a>
-
-<a href="/summaries" style="border: 1px solid var(--lightgray); padding: 20px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: bold;">
-ملخصات عامة
-</a>
-
-
+<div class="lessons-grid">
+  <a href="/regular-lessons" class="lesson-btn">الدروس المنتظمة</a>
+  <a href="/special-lessons" class="lesson-btn">الدروس الخاصة</a>
+  <a href="/summaries" class="lesson-btn">ملخصات عامة</a>
 </div>
