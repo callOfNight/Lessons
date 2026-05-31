@@ -25,15 +25,16 @@ export const sharedPageComponents: SharedLayout = {
 // components for pages that display a single page (e.g. a single note)
 export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
-    Component.ConditionalRender({
-      component: Component.Breadcrumbs(),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
+    // Component.ConditionalRender({
+    //   component: Component.Breadcrumbs(),
+    //   condition: (page) => page.fileData.slug !== "index",
+    // }),
+    Component.Backlinks(),
     Component.ArticleTitle(),
-    Component.ContentMeta({
-      showReadingTime: false,
-      showComma: false
-    }),
+    // Component.ContentMeta({
+    //   showReadingTime: false,
+    //   showComma: false
+    // }),
     Component.TagList(),
   ],
   left: [
@@ -54,7 +55,7 @@ export const defaultContentPageLayout: PageLayout = {
   right: [
     // Component.Graph(),
     // Component.DesktopOnly(Component.TableOfContents()),
-    // Component.Backlinks(),
+    Component.Backlinks(),
   ],
 }
 

@@ -16,10 +16,10 @@ date: false
   </div>
 
   <div class="home-nav-card">
-    <a href="/special-lessons" class="home-nav-card-link" aria-label="الدروس الخاصة"></a>
-    <h3 class="home-nav-card-title">🕌 الدروس الخاصة <span class="badge">علوم الإسلام</span></h3>
-    <p class="home-nav-card-desc">مجالس العِلم الدينيّة الخاصة للتوسّع في علوم الدين الاسلامي</p>
-    <div class="home-nav-card-action">تصفح المواد الخاصة</div>
+    <a href="/special-lessons" class="home-nav-card-link" aria-label="الدروس الإضافية"></a>
+    <h3 class="home-nav-card-title">🕌 الدروس الإضافية <span class="badge">علوم الإسلام</span></h3>
+    <p class="home-nav-card-desc">مجالس العِلم الدينيّة الإضافية للتوسّع في علوم الدين الاسلامي</p>
+    <div class="home-nav-card-action">تصفح المواد الإضافية</div>
   </div>
 
   <div class="home-nav-card">
