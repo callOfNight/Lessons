@@ -1,36 +1,8 @@
-// @use "./base.scss";
-
-// put your custom CSS here!
-// @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap'); // Fallback if Scherable New is local
-
-// :root {
-//   --bodyFont: "Scheherazade New", sans-serif;
-//   --headerFont: "Scheherazade New", sans-serif;
-//   --codeFont: monospace;
-// }
-
-// html {
-//   direction: rtl;
-//   text-align: right;
-// }
-
-// /* Center search at the top */
-// header {
-//   display: flex;
-//   justify-content: center;
-//   width: 100%;
-//   padding: 1rem 0;
-// }
-
-// .search {
-//   max-width: 600px;
-//   width: 100%;
-// }
-
-
-/* Inside quartz/styles/custom.scss */
 @use "./base.scss";
 
+/* ==========================================================================
+   1. EXISTING MANDATORY FIXES (Maintained Verbatim)
+   ========================================================================== */
 html {
   direction: rtl;
   text-align: right;
@@ -49,8 +21,12 @@ header {
   width: 100%;
   padding: 1rem 0;
 }
-.search { max-width: 600px; width: 100%; }
-/* Add to bottom of quartz/styles/custom.scss */
+
+.search { 
+  max-width: 600px; 
+  width: 100%; 
+}
+
 .content-meta {
   direction: ltr !important; 
   display: inline-block;
@@ -58,11 +34,438 @@ header {
   margin-top: 0.5rem;
 }
 
+/* ==========================================================================
+   2. NATIVE QUARTZ COLOR MATRIX MATCHING DESIGNER BLUEPRINT
+   ========================================================================== */
+:root[saved-theme="light"] {
+  background-color: #f3f4f6;
+  --light: #f3f4f6;
+  --lightgray: #f9fafb;
+  --gray: #e5e7eb;
+  --darkgray: #4b5563;
+  --dark: #111827;
+  --secondary: #059669;         /* Emerald green */
+  --highlight: #ecfdf5;
+  --surface: #ffffff;
+  --brand-secondary: #0d9488;
+  --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.04), 0 2px 4px -1px rgba(0,0,0,0.02);
+  --shadow-md: 0 10px 20px -8px rgba(0,0,0,0.08);
+  --btn-main-text: #ffffff;
+}
 
-// .content-meta span:nth-child(2), .reading-time { display: none !important; }
+:root[saved-theme="dark"] {
+  background-color: #0f172a;
+  --light: #0f172a;
+  --lightgray: #334155;
+  --gray: #334155;
+  --darkgray: #94a3b8;
+  --dark: #f1f5f9;
+  --secondary: #4ade80;         /* Softer mint in dark mode */
+  --highlight: #052e16;
+  --surface: #1e293b;
+  --brand-secondary: #2dd4bf;
+  --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.2);
+  --shadow-md: 0 10px 20px -8px rgba(0,0,0,0.4);
+  --btn-main-text: #0f172a;
+}
 
-/* Hide reading time */
-// .content-meta span:nth-child(2), 
-// .reading-time {
-//   display: none !important;
-// }
+/* Apply background variables to root layout structure */
+body {
+  // background-color: var(--light) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Force full‑width content area gracefully */
+body .page-content article {
+  max-width: 100% !important;
+  padding: 0 2rem !important;
+}
+
+/* ==========================================================================
+   3. STRUCTURAL LAYOUT WORK & MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* Universal RTL Wrapper Setup */
+.home-grid-container,
+.feed-list-container,
+.lesson-details-wrapper {
+  direction: rtl;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.home-grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.feed-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.lesson-details-wrapper {
+  margin: 28px 0;
+}
+
+/* --- THE CARD FOUNDATION --- */
+.home-nav-card,
+.lesson-feed-card,
+.lesson-meta-card {
+  position: relative;
+  box-sizing: border-box;
+  background: var(--surface) !important;
+  border: 1px solid var(--gray) !important;
+  border-radius: 24px; /* Premium slightly rounder aesthetic */
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.25s ease;
+}
+
+/* Top Decorative Scholastic Gradient Ribbon Bar */
+.home-nav-card::before,
+.lesson-feed-card::before,
+.lesson-meta-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; left: 0;
+  height: 4px;
+  background: linear-gradient(to left, var(--secondary), var(--brand-secondary));
+}
+
+/* Card Hover Mechanics */
+.home-nav-card:hover,
+.lesson-feed-card:hover,
+.lesson-meta-card:hover {
+  border-color: var(--secondary) !important;
+  box-shadow: var(--shadow-md);
+}
+
+@media (min-width: 769px) {
+  .home-nav-card:hover,
+  .lesson-feed-card:hover,
+  .lesson-meta-card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* Subtle Click/Press Haptic Simulation Feedback for Touch/Click */
+.home-nav-card:active,
+.lesson-feed-card:active,
+.lesson-meta-card:active {
+  transform: scale(0.99);
+  transition-duration: 0.05s;
+}
+
+/* Stretched Click Invisible Overlay Anchor Link */
+.home-nav-card-link {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: 1;
+  background: transparent;
+  text-decoration: none;
+  color: transparent;
+}
+
+/* --- TEXT & INFORMATION HIERARCHY --- */
+.home-nav-card-title,
+.lesson-feed-title {
+  position: relative;
+  z-index: 2;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--dark) !important;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-nav-card-desc,
+.lesson-feed-summary {
+  position: relative;
+  z-index: 2;
+  font-size: 1.15rem;
+  color: var(--darkgray) !important;
+  line-height: 1.7;
+  margin: 0 0 20px 0;
+}
+
+/* --- BADGES & DUAL-DATING ARTIFACTS --- */
+.lesson-feed-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lesson-feed-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.feed-badge, 
+.home-nav-card-title .badge {
+  font-size: 0.95rem;
+  font-weight: 400;
+  background: var(--lightgray);
+  color: var(--darkgray) !important;
+  border: 1px solid var(--gray);
+  padding: 4px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Active functional accent pop highlighting primary modern date */
+.feed-badge.date-badge {
+  background: var(--highlight);
+  color: var(--secondary) !important;
+  border: 1px solid rgba(74, 222, 128, 0.15);
+  font-weight: 700;
+}
+
+/* --- ACTIONS AREA & INTERFACE CONTROL ELEMENTS --- */
+.home-nav-card-action,
+.lesson-feed-actions,
+.meta-action-group {
+  position: relative;
+  z-index: 2;
+}
+
+.home-nav-card-action {
+  display: block;
+  text-align: right;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--secondary);
+  pointer-events: none; /* Let pointer click fall through seamlessly to overlay */
+}
+
+.home-nav-card-action::after {
+  content: ' ←';
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home-nav-card:hover .home-nav-card-action::after {
+  transform: translateX(-6px);
+}
+
+/* Buttons Grid Layout Systems */
+.lesson-feed-actions, 
+.meta-action-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.lesson-feed-card .lesson-feed-actions {
+  margin-top: 16px;
+}
+
+.meta-action-group {
+  border-top: 1px solid var(--gray);
+  padding-top: 16px; 
+  margin-top: 4px;
+}
+
+/* Premium Universal Interface Button Elements */
+.feed-btn, 
+.meta-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  text-decoration: none !important;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  line-height: normal !important;
+}
+
+/* Primary buttons with deep glowing contrast profiles */
+.feed-btn.main-btn, 
+.meta-btn.primary {
+  background: linear-gradient(135deg, var(--secondary), var(--brand-secondary)) !important;
+  color: var(--btn-main-text) !important;
+  border: none;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+}
+
+.feed-btn.main-btn:hover, 
+.meta-btn.primary:hover {
+  transform: translateY(-1px);
+  /* Solved: Kept solid shadows rather than transparent breaking opacities */
+  box-shadow: 0 6px 16px rgba(5, 150, 105, 0.25); 
+}
+
+/* Subordinate / Secondary Action Elements */
+.feed-btn.sub-btn, 
+.meta-btn.secondary {
+  background: transparent !important;
+  color: var(--secondary) !important;
+  border: 1px solid var(--secondary) !important;
+}
+
+.feed-btn.sub-btn:hover, 
+.meta-btn.secondary:hover {
+  background: var(--highlight) !important;
+  transform: translateY(-1px);
+}
+
+/* --- NATIVE ACCORDION INTERACTIVE DETAILS OVERRIDES --- */
+.lesson-meta-card summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--dark) !important;
+  outline: none;
+  user-select: none;
+  line-height: normal !important;
+}
+
+.lesson-meta-card summary::-webkit-details-marker { 
+  display: none; 
+}
+
+.lesson-meta-card summary::after {
+  content: '✦';
+  font-size: 1rem;
+  color: var(--secondary);
+  background: var(--highlight);
+  padding: 4px 12px;
+  border-radius: 8px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lesson-meta-card[open] summary::after {
+  transform: rotate(45deg); /* Elegant micro-rotational indicator hint */
+}
+
+/* Collapsible Content Information Grid Layout */
+.lesson-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+  border-top: 1px solid var(--gray);
+  padding-top: 24px;
+}
+
+.meta-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--lightgray);
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: var(--darkgray) !important;
+  border: 1px solid var(--gray);
+  transition: all 0.2s ease;
+}
+
+.meta-pill:hover {
+  background: var(--highlight);
+  border-color: var(--secondary);
+  transform: translateY(-1px);
+}
+
+.meta-pill .icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  background: var(--surface);
+  padding: 6px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  flex-shrink: 0;
+}
+
+.meta-pill strong {
+  color: var(--dark);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+/* ==========================================================================
+   4. DEVICE AND APP BREATHING RESPONSIVE LAYOUT MATRIX BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 768px) {
+  .home-nav-card {
+    width: 100% !important; /* Forces layout safely into single column tracking flow */
+    padding: 24px; 
+    border-radius: 16px; 
+  }
+
+  .home-nav-card-title {
+    font-size: 1.4rem; 
+  }
+
+  .home-nav-card-desc {
+    font-size: 1rem;
+    margin: 0 0 16px 0;
+  }
+
+  .home-nav-card-action {
+    font-size: 1.1rem;
+    padding: 8px 0; 
+  }
+
+  /* Break off sticky hovers on mobile touch screens */
+  .home-nav-card:hover {
+    transform: none !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .lesson-feed-header {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .lesson-feed-title {
+    margin: 0;
+  }
+  .lesson-feed-actions,
+  .meta-action-group {
+    grid-template-columns: 1fr 1fr; /* Side-by-side action balance fields */
+  }
+}
+
+@media (max-width: 480px) {
+  .lesson-meta-grid {
+    grid-template-columns: 1fr; /* Staggered stacked view for compact smartphone viewports */
+    gap: 12px;
+  }
+  .meta-pill {
+    padding: 12px;
+    border-radius: 10px;
+  }
+}
+
+@media (min-width: 769px) {
+  .home-nav-card {
+    width: calc(50% - 12px); /* Seamless equal-height column splits on modern desktops */
+  }
+}
