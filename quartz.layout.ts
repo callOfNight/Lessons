@@ -29,7 +29,7 @@ export const defaultContentPageLayout: PageLayout = {
     //   component: Component.Breadcrumbs(),
     //   condition: (page) => page.fileData.slug !== "index",
     // }),
-    Component.Backlinks(),
+    Component.MobileOnly(Component.Backlinks()),
     Component.ArticleTitle(),
     // Component.ContentMeta({
     //   showReadingTime: false,
