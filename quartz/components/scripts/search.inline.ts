@@ -12,6 +12,28 @@ interface Item {
   [key: string]: any
 }
 
+// Robust Arabic Text Normalization Engine for Fuzzy Mapping
+function normalizeArabic(text: string): string {
+  if (!text) return "";
+  return text
+    // decompose characters so diacritics become separate combining marks
+    .normalize("NFC")
+    // 1. Remove all Arabic diacritics (Tashkeel / Harakat / Shadda / Sukoon)
+    .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, "")
+    // 2. Remove Tatweel/Kashida (stretching character 'ـ')
+    .replace(/\u0640/g, "")
+    // 3. Normalize Alif variations (أ, إ, آ) down to bare Alif (ا)
+    .replace(/[ٱأإآ]/g, "ا")
+    // 4. Normalize Ya' and Alif Maqsoor (ى to ي)
+    .replace(/ى/g, "ي")
+    // 5. Normalize Ta Marbuta to Ha (ة to ه)
+    .replace(/ة/g, "ه")
+    // 6. Normalize Hamza seats (ؤ, ئ) to base formats
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ي")
+    .trim();
+}
+
 // Can be expanded with things like "term" in the future
 type SearchType = "basic" | "tags"
 let searchType: SearchType = "basic"
@@ -20,7 +42,8 @@ const encoder = (str: string): string[] => {
   const tokens: string[] = []
   let bufferStart = -1
   let bufferEnd = -1
-  const lower = str.toLowerCase()
+  // Modifed line
+  const lower = normalizeArabic(str.toLowerCase())
 
   let i = 0
   for (const char of lower) {
@@ -102,7 +125,10 @@ const tokenizeTerm = (term: string) => {
 }
 
 function highlight(searchTerm: string, text: string, trim?: boolean) {
-  const tokenizedTerms = tokenizeTerm(searchTerm)
+  // Modified
+  const normalizedSearch = normalizeArabic(searchTerm.toLowerCase())
+  const normalizedText = normalizeArabic(text.toLowerCase())
+  const tokenizedTerms = tokenizeTerm(normalizedSearch)
   let tokenizedText = text.split(/\s+/).filter((t) => t !== "")
 
   let startIndex = 0
@@ -161,17 +187,23 @@ function highlightHTML(searchTerm: string, el: HTMLElement) {
   const highlightTextNodes = (node: Node, term: string) => {
     if (node.nodeType === Node.TEXT_NODE) {
       const nodeText = node.nodeValue ?? ""
-      const regex = new RegExp(term.toLowerCase(), "gi")
-      const matches = nodeText.match(regex)
+      // Added normalized
+      const normalizedNodeText = normalizeArabic(nodeText.toLowerCase())
+      const normalizedTerm = normalizeArabic(term.toLowerCase())
+      const regex = new RegExp(normalizedTerm.toLowerCase(), "gi")
+      const matches = normalizedNodeText.match(regex)
       if (!matches || matches.length === 0) return
       const spanContainer = document.createElement("span")
       let lastIndex = 0
       for (const match of matches) {
-        const matchIndex = nodeText.indexOf(match, lastIndex)
+        const matchIndex = normalizedNodeText.indexOf(match, lastIndex)
+        /* MINIMAL FIX: Extract text slices from nodeText instead of normalizedNodeText */
         spanContainer.appendChild(document.createTextNode(nodeText.slice(lastIndex, matchIndex)))
-        spanContainer.appendChild(createHighlightSpan(match))
+        spanContainer.appendChild(createHighlightSpan(nodeText.slice(matchIndex, matchIndex + match.length)))
+        
         lastIndex = matchIndex + match.length
       }
+      /* MINIMAL FIX: Extract final text slice from nodeText */
       spanContainer.appendChild(document.createTextNode(nodeText.slice(lastIndex)))
       node.parentNode?.replaceChild(spanContainer, node)
     } else if (node.nodeType === Node.ELEMENT_NODE) {
